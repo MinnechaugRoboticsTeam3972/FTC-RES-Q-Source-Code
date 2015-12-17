@@ -7,6 +7,9 @@ public class HangingArm {
     DcMotor motor_arm, motor_winch_in, motor_winch_out;
     Gamepad controller;
 
+    // Speed of lower arm rotation is: V = .75r cm/s
+    // r is the angular speed of the motor
+
 
     /**
      * Constructor for Autonomous mode / constructor for when no remote control is being used
@@ -33,13 +36,38 @@ public class HangingArm {
         motor_winch_out = winch_out;
         controller = c;
     }
+
+    /**
+     * Extend both parts of the arm. Motor_winch_out and motor_winch_in need to work inversely
+     *
+     * @param time
+     */
     public void extendArm(int time){
 
+        //rotate motor_arm
+        //rotate motor_winch_out
+        //-rotate motor_winch_in
     }
+
+    /**
+     * Pull in both parts of the arm. Motor_winch_out and motor_winch_in need to operate inversely
+     * @param time
+     */
+
     public void retractArm(int time){
 
+        //-rotate motor_arm
+        // rotate motor_winch_in
+        //-rotate motor_winch_out
     }
+
+    /**
+     * Outer part of arm needs to be pulled  back in. Motor_winch_out and motor_winch_in need to operate inversely
+     * @param time
+     */
     public void pullUp(int time){
+        //rotate motor _winch_in
+        //run motor_arm at speed 0
         
     }
 }
