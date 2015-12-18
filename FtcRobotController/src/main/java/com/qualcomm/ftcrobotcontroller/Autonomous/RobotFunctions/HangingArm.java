@@ -1,11 +1,15 @@
 package com.qualcomm.ftcrobotcontroller.Autonomous.RobotFunctions;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class HangingArm {
     DcMotor motor_arm, motor_winch_in, motor_winch_out;
     Gamepad controller;
+    final double armSpeedCoefficient = .75;
+    final double winchInCoefficient = 0;
+    final double winchOutCoefficient = 0;
 
     // Speed of lower arm rotation is: V = .75r cm/s
     // r is the angular speed of the motor
@@ -34,7 +38,6 @@ public class HangingArm {
         motor_arm = arm;
         motor_winch_in = winch_in;
         motor_winch_out = winch_out;
-        controller = c;
     }
 
     /**
@@ -43,9 +46,10 @@ public class HangingArm {
      * @param time
      */
     public void extendArm(int time){
-
         //rotate motor_arm
+        
         //rotate motor_winch_out
+        
         //-rotate motor_winch_in
     }
 
@@ -53,12 +57,14 @@ public class HangingArm {
      * Pull in both parts of the arm. Motor_winch_out and motor_winch_in need to operate inversely
      * @param time
      */
-
     public void retractArm(int time){
-
         //-rotate motor_arm
+        
         // rotate motor_winch_in
+        
         //-rotate motor_winch_out
+        
+
     }
 
     /**
@@ -67,7 +73,25 @@ public class HangingArm {
      */
     public void pullUp(int time){
         //rotate motor _winch_in
-        //run motor_arm at speed 0
         
+        //-rotate motor_winch_out
+        
+        //run motor_arm at speed 0
+        if(motor_arm.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
+            motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        }
+
+        
+    }
+
+    public void pullUpReverse(){
+        //-rotate motor_winch_in
+        
+        //rotate_motor_winch_out
+        
+        //run motor_arm at speed 0
+        if(motor_arm.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
+            motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        }
     }
 }
