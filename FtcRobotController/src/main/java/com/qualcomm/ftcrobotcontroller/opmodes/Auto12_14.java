@@ -1,4 +1,4 @@
-package com.qualcomm.ftcrobotcontroller.Autonomous;
+package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,6 +17,7 @@ public class Auto12_14 extends LinearOpMode{
 
     public void runOpMode()throws InterruptedException {
 
+        //create sensor and motor objects for robot parts
         motor_arm = hardwareMap.dcMotor.get("motor_arm");
         motor_winch_in = hardwareMap.dcMotor.get("motor_winch_in");
         motor_winch_out = hardwareMap.dcMotor.get("motor_winch_out");
@@ -26,9 +27,9 @@ public class Auto12_14 extends LinearOpMode{
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
         gyro = hardwareMap.gyroSensor.get("gyro");
 
-
         driveLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        //these motors will have to run at constant speeds
         motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         driveRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         driveLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
