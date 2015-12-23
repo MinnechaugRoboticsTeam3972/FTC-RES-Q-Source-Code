@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.ftcrobotcontroller.RobotFunctions.NxtGyro;
+import com.qualcomm.ftcrobotcontroller.RobotFunctions.DriveMotors;
 
 public class Auto12_14 extends LinearOpMode{
 
@@ -13,6 +16,10 @@ public class Auto12_14 extends LinearOpMode{
     UltrasonicSensor distanceSensor;
     ColorSensor colorSensor;
     GyroSensor gyro;
+    ElapsedTime timer;
+    NxtGyro nxtGyro;
+    DriveMotors driveMotors;
+
 
     public void runOpMode()throws InterruptedException {
 
@@ -26,12 +33,20 @@ public class Auto12_14 extends LinearOpMode{
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
         gyro = hardwareMap.gyroSensor.get("gyro");
 
+        //create object to keep track of time; will be sent to nxtGyro for finding heading
+        timer = new ElapsedTime();
+        nxtGyro = new NxtGyro(gyro, timer);
+
+        //create motor cluster for drive motors;
+        driveMotors = new DriveMotors(driveLeft, driveRight, nxtGyro);
+
         driveLeft.setDirection(DcMotor.Direction.REVERSE);
 
         //these motors will have to run at constant speeds
         motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         driveRight.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         driveLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+
 
         waitForStart();
 
