@@ -4,17 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.UltrasonicSensor;
-import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.ftcrobotcontroller.RobotFunctions.HangingArm;
 
 public class Teleop12_14 extends OpMode {
 
     DcMotor motor_arm, motor_winch_in, motor_winch_out, driveLeft, driveRight;
-    UltrasonicSensor distanceSensor;
-    ColorSensor colorSensor;
-    GyroSensor gyro;
     HangingArm hangingArm;
 
     public void init() {
@@ -24,13 +18,10 @@ public class Teleop12_14 extends OpMode {
         motor_winch_out = hardwareMap.dcMotor.get("motor_winch_out");
         driveLeft = hardwareMap.dcMotor.get("driveLeft");
         driveRight = hardwareMap.dcMotor.get("driveRight");
-        distanceSensor = hardwareMap.ultrasonicSensor.get("distanceSensor");
-        colorSensor = hardwareMap.colorSensor.get("colorSensor");
-        gyro = hardwareMap.gyroSensor.get("gyro");
 
         driveLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        //this motor will have to run at a contstant velocity
+        //this motor will have to run at a constant velocity
         motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
         //create hanging arm motor cluster for whole arm motions
