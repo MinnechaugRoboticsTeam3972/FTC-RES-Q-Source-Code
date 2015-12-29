@@ -3,16 +3,18 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.LightSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.ftcrobotcontroller.RobotFunctions.NxtGyro;
 import com.qualcomm.ftcrobotcontroller.RobotFunctions.DriveMotors;
+import com.qualcomm.ftcrobotcontroller.RobotFunctions.NxtGyro;
 
 public class Auto12_14 extends LinearOpMode{
 
     DcMotor motor_arm, motor_winch_in, motor_winch_out, driveLeft, driveRight;
+    LightSensor lightSensor;
     UltrasonicSensor distanceSensor;
     ColorSensor colorSensor;
     GyroSensor gyro;
@@ -29,6 +31,7 @@ public class Auto12_14 extends LinearOpMode{
         motor_winch_out = hardwareMap.dcMotor.get("motor_winch_out");
         driveLeft = hardwareMap.dcMotor.get("driveLeft");
         driveRight = hardwareMap.dcMotor.get("driveRight");
+        lightSensor = hardwareMap.lightSensor.get("lightSensor");
         distanceSensor = hardwareMap.ultrasonicSensor.get("distanceSensor");
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
         gyro = hardwareMap.gyroSensor.get("gyro");
@@ -38,7 +41,7 @@ public class Auto12_14 extends LinearOpMode{
         nxtGyro = new NxtGyro(gyro, timer);
 
         //create motor cluster for drive motors;
-        driveMotors = new DriveMotors(driveLeft, driveRight, nxtGyro);
+        driveMotors = new DriveMotors(driveLeft, driveRight, nxtGyro, timer);
 
         driveLeft.setDirection(DcMotor.Direction.REVERSE);
 
