@@ -25,56 +25,40 @@ public class HangingArm {
         motor_winch_out = winch_out;
     }
 
-    /**
-     * Extend both parts of the arm. Motor_winch_out and motor_winch_in need to work inversely
-     *
-     * @param time
-     */
-    public void extendArm(int time){
-        //rotate motor_arm
-
-        //rotate motor_winch_out
-
-        //-rotate motor_winch_in
+    public void extendArm(){
+        motor_arm.setPower(75);
+        motor_winch_in.setPower(90);
+        motor_winch_out.setPower(50);
     }
 
-    /**
-     * Pull in both parts of the arm. Motor_winch_out and motor_winch_in need to operate inversely
-     * @param time
-     */
-    public void retractArm(int time){
-        //-rotate motor_arm
-
-        // rotate motor_winch_in
-
-        //-rotate motor_winch_out
-
+    public void retractArm(){
+        motor_arm.setPower(-75);
+        motor_winch_in.setPower(-90);
+        motor_winch_out.setPower(-50);
     }
 
-    /**
-     * Outer part of arm needs to be pulled  back in. Motor_winch_out and motor_winch_in need to operate inversely
-     * @param time
-     */
-    public void pullUp(int time){
-        //rotate motor _winch_in
+    public void pullUp(){
 
-        //-rotate motor_winch_out
-
-        //run motor_arm at speed 0
         if(motor_arm.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
             motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
+        motor_arm.setPower(1);
+        motor_winch_in.setPower(-50);
+        motor_winch_out.setPower(-90);
 
+        motor_arm.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
     }
 
     public void pullUpReverse(){
-        //-rotate motor_winch_in
 
-        //rotate_motor_winch_out
-
-        //run motor_arm at speed 0
         if(motor_arm.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
             motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
+
+        motor_arm.setPower(1);
+        motor_winch_in.setPower(50);
+        motor_winch_out.setPower(90);
+
+        motor_arm.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
     }
 }
