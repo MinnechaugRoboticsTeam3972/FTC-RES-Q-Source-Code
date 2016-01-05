@@ -48,15 +48,19 @@ public class FtcOpModeRegister implements OpModeRegister {
    */
   public void register(OpModeManager manager) {
 
-    /*
+     /*
      * register your op modes here.
      * The first parameter is the name of the op mode
      * The second parameter is the op mode class property
      *
      * If two or more op modes are registered with the same name, the app will display an error.
      */
-    manager.register("Teleop12_14", Teleop12_14.class);
-    manager.register("Auto12_14", Auto12_14.class);
+      manager.register("ResQTeleop", ResQTeleop.class);
+      manager.register("Auto_Blue_Floor", Auto_Blue_Floor.class);
+      manager.register("Auto_Blue_Mountain", Auto_Blue_Mountain.class);
+      manager.register("Auto_Red_Floor", Auto_Red_Floor.class);
+      manager.register("Auto_Red_Mountain", Auto_Red_Mountain.class);
     
   }
+
 }
