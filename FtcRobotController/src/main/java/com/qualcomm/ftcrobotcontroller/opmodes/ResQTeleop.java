@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.ftcrobotcontroller.RobotFunctions.HangingArm;
 
-public class Teleop12_14 extends OpMode {
+public class ResQTeleop extends OpMode {
 
     DcMotor motor_arm, motor_winch_in, motor_winch_out, driveLeft, driveRight;
     HangingArm hangingArm;
@@ -41,6 +41,20 @@ public class Teleop12_14 extends OpMode {
         driveRight.setPower(rightDrivePower);
 
         //controller 2 controls lifting arm
+
+        if(gamepad2.right_bumper){
+            hangingArm.extendArm();
+        }
+        if(gamepad2.left_bumper){
+            hangingArm.retractArm();
+        }
+
+        if(gamepad2.right_trigger > 0){
+            hangingArm.pullUp();
+        }
+        if(gamepad2.left_trigger > 0 ){
+            hangingArm.pullUpReverse();
+        }
 
     }
 }
