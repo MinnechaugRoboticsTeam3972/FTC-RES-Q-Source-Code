@@ -14,9 +14,9 @@ public class NxtGyro{
         timer = time;
     }
 
-    //returns heading in degrees
+    //returns heading in radians
     public double getHeading(){
-        double temp = gyroSensor.getRotation();
+        double temp = gyroSensor.getRotation() * (180.0 / Math.PI);
         temp *= timer.time();
         timer.reset();
         heading += temp;
