@@ -4,19 +4,23 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
 public class DriveMotors {
     private DcMotor driveLeft, driveRight;
-    private NxtGyro nxtGyro;
     private ElapsedTime timer;
     private double distance;
+    private double angle;
+    private double circumference;
+    private final double angleInterval = 0.1;
 
     //DriveMotors Constructor
-    public DriveMotors(DcMotor left, DcMotor right, NxtGyro gyro, ElapsedTime time){
+    public DriveMotors(DcMotor left, DcMotor right, ElapsedTime time){
         driveLeft = left;
         driveRight = right;
-        nxtGyro = gyro;
         timer = time;
         distance = 0;
+        angle = 0;
+        circumference = Math.pow(18.7325, 2) * Math.PI;
     }
 
     //Drive robot forwards
@@ -39,10 +43,10 @@ public class DriveMotors {
         driveLeft.setPower(100);
         driveRight.setPower(-100);
         timer.reset();
-        while(nxtGyro.getHeading() < angle){
+        while(this.getAngle() < angle){
             //wait until turn is complete
         }
-        nxtGyro.resetHeading();
+        this.resetAngle();
         this.stop();
     }
 
@@ -52,10 +56,10 @@ public class DriveMotors {
         driveLeft.setPower(-100);
         driveRight.setPower(100);
         timer.reset();
-        while(nxtGyro.getHeading() < angle){
+        while(this.getAngle() < angle){
             //wait until turn is complete
         }
-        nxtGyro.resetHeading();
+        this.resetAngle();
         this.stop();
     }
 
@@ -88,6 +92,24 @@ public class DriveMotors {
         if(driveLeft.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS){
             driveLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
+    }
+
+    //resets the measured turn angle to 0
+    private void resetAngle(){
+        angle = 0;
+    }
+
+    //calculate the angle turned by the robot based on portion of circumference turned
+    private double getAngle() {
+        double currentDistance = distance;
+        timer.startTime();
+        //compound the angle after .1 seconds
+        while(timer.time() < angleInterval){
+
+        }
+        double ratio = (this.getDistance() - currentDistance) / circumference;
+        angle += ratio * (2 * Math.PI);
+        return angle;
     }
 }
 
