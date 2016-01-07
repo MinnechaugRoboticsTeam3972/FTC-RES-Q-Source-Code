@@ -4,7 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 
 public class HangingArm {
-    DcMotor motor_arm, motor_winch_in, motor_winch_out;
+    DcMotor motor_arm, motor_winch_1, motor_winch_2;
+    DcMotorController arm;
     final double armSpeedCoefficient = .75;
     final double winchInCoefficient = 0;
     final double winchOutCoefficient = 0;
@@ -12,53 +13,51 @@ public class HangingArm {
     // Speed of lower arm rotation is: V = .75r cm/s
     // r is the angular speed of the motor
 
-
     /**
      * Constructor for usage in OpModes/LinearOpModes
      * @param arm arm base pivot motor
-     * @param winch_in motor to bring the end of the arm back to the robot
-     * @param winch_out motor to rotate end of arm out
+     * @param winch_1 motor to bring the end of the arm back to the robot
+     * @param winch_2 motor to rotate end of arm out
      */
-    public HangingArm(DcMotor arm, DcMotor winch_in, DcMotor winch_out){
+    public HangingArm(DcMotor arm, DcMotor winch_1, DcMotor winch_2, DcMotorController armController){
         motor_arm = arm;
-        motor_winch_in = winch_in;
-        motor_winch_out = winch_out;
+        motor_winch_1 = winch_1;
+        motor_winch_1 = winch_2;
+        this.arm = armController;
     }
 
     public void extendArm(){
-        motor_arm.setPower(75);
-        motor_winch_in.setPower(90);
-        motor_winch_out.setPower(50);
+        motor_arm.setPower(-1);
+        motor_winch_1.setPower(1);
+        motor_winch_2.setPower(1);
     }
 
     public void retractArm(){
-        motor_arm.setPower(-75);
-        motor_winch_in.setPower(-90);
-        motor_winch_out.setPower(-50);
+        motor_arm.setPower(1);
+        motor_winch_1.setPower(-1);
+        motor_winch_2.setPower(-1);
     }
 
     public void pullUp(){
 
-        if(motor_arm.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
-            motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        }
-        motor_arm.setPower(1);
-        motor_winch_in.setPower(-50);
-        motor_winch_out.setPower(-90);
-
-        motor_arm.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motor_arm.setPower(0);
+        //motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        motor_winch_1.setPower(-1);
+        motor_winch_2.setPower(-1);
     }
 
     public void pullUpReverse(){
 
-        if(motor_arm.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS) {
-            motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        }
+        motor_arm.setPower(0);
+        motor_winch_1.setPower(1);
+        motor_winch_2.setPower(1);
+    }
 
-        motor_arm.setPower(1);
-        motor_winch_in.setPower(50);
-        motor_winch_out.setPower(90);
+    private void setWrite(){
+        arm.setMotorControllerDeviceMode(DcMotorController.DeviceMode.WRITE_ONLY);
+    }
 
-        motor_arm.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+    private void setRead(){
+        arm.setMotorControllerDeviceMode(DcMotorController.DeviceMode.READ_ONLY);
     }
 }
