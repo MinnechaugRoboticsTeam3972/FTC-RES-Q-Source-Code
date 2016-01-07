@@ -8,24 +8,26 @@ import com.qualcomm.ftcrobotcontroller.RobotFunctions.HangingArm;
 
 public class ResQTeleop extends OpMode {
 
-    DcMotor motor_arm, motor_winch_in, motor_winch_out, driveLeft, driveRight;
+    DcMotor motor_arm, motor_winch_1, motor_winch_2, driveLeft, driveRight;
+    DcMotorController arm;
     HangingArm hangingArm;
 
     public void init() {
         //create sensor and motor objects for robot parts
+        arm = hardwareMap.dcMotorController.get("arm motor");
         motor_arm = hardwareMap.dcMotor.get("motor_arm");
-        motor_winch_in = hardwareMap.dcMotor.get("motor_winch_in");
-        motor_winch_out = hardwareMap.dcMotor.get("motor_winch_out");
+        motor_winch_1 = hardwareMap.dcMotor.get("motor_winch_1");
+        motor_winch_2 = hardwareMap.dcMotor.get("motor_winch_2");
         driveLeft = hardwareMap.dcMotor.get("driveLeft");
         driveRight = hardwareMap.dcMotor.get("driveRight");
 
-        driveLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        //this motor will have to run at a constant velocity
+        arm.setMotorControllerDeviceMode(DcMotorController.DeviceMode.WRITE_ONLY);
         motor_arm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
 
+        driveLeft.setDirection(DcMotor.Direction.REVERSE);
+
         //create hanging arm motor cluster for whole arm motions
-        hangingArm = new HangingArm(motor_arm, motor_winch_in, motor_winch_out);
+        hangingArm = new HangingArm(motor_arm, motor_winch_1, motor_winch_2, arm);
     }
 
     public void loop() {
