@@ -2,115 +2,102 @@ package com.qualcomm.ftcrobotcontroller.RobotFunctions;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
 
 public class DriveMotors {
+    DcMotorController drive;
     private DcMotor driveLeft, driveRight;
-    private ElapsedTime timer;
     private double distance;
-    private double angle;
     private double circumference;
-    private final double angleInterval = 0.1;
 
     //DriveMotors Constructor
-    public DriveMotors(DcMotor left, DcMotor right, ElapsedTime time){
+    public DriveMotors(DcMotor left, DcMotor right, DcMotorController controller){
+        drive = controller;
         driveLeft = left;
         driveRight = right;
-        timer = time;
         distance = 0;
-        angle = 0;
         circumference = Math.pow(18.7325, 2) * Math.PI;
     }
 
     //Drive robot forwards
-    public void DriveForwards() {
-        this.checkMode();
-        driveLeft.setPower(100);
-        driveRight.setPower(100);
+    public void driveForwards() {
+        this.setWrite();
+        driveLeft.setPower(1);
+        driveRight.setPower(1);
+        this.setRead();
     }
 
     //Drive robot backwards
-    public void DriveBackwards() {
-        this.checkMode();
-        driveLeft.setPower(-100);
-        driveRight.setPower(-100);
+    public void driveBackwards() {
+        this.setWrite();
+        driveLeft.setPower(-1);
+        driveRight.setPower(-1);
+        this.setRead();
     }
 
     //Turn robot to the right until desired angle is reached
-    public void turnRight(double angle){
-        this.checkMode();
-        driveLeft.setPower(100);
-        driveRight.setPower(-100);
-        timer.reset();
-        while(this.getAngle() < angle){
+    public void turnRight(double angle) {
+        this.setWrite();
+        driveLeft.setPower(1);
+        driveRight.setPower(-1);
+        this.setRead();
+        double target = this.angleToDistance(angle);
+        while(this.getDistance() < target){
             //wait until turn is complete
         }
-        this.resetAngle();
         this.stop();
     }
 
     //Turn robot to the left until desired angle is reached
-    public void turnLeft(double angle){
-        this.checkMode();
-        driveLeft.setPower(-100);
-        driveRight.setPower(100);
-        timer.reset();
-        while(this.getAngle() < angle){
+    public void turnLeft(double angle) {
+        this.setWrite();
+        driveLeft.setPower(-1);
+        driveRight.setPower(1);
+        this.setRead();
+        double target = this.angleToDistance(angle);
+        while(this.getDistance() < target){
             //wait until turn is complete
         }
-        this.resetAngle();
         this.stop();
     }
 
     //Get the total distance traveled by the robot since last reset
     public double getDistance(){
+        this.setRead();
         distance +=  driveRight.getCurrentPosition() * 23.8125;
+        this.setWrite();
         return distance;
     }
 
     //Reset both the encoder distance and instance variable value
     //WARNING!! This method should only be used when drive motors are not running to ensure accurate calibration
     public void resetDistance(){
+        this.setWrite();
         distance = 0;
         driveLeft.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         driveRight.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-        this.checkMode();
+        this.setRead();
     }
 
     //Stop both drive motors
     public void stop(){
+        this.setWrite();
         driveLeft.setPower(0);
         driveRight.setPower(0);
-    }
-
-    //check the encoder state of both motors; if in autonomous mode, set motors to run with encoders
-    private void checkMode(){
-        if(driveLeft.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS){
-            driveLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        }
-        if(driveLeft.getMode() != DcMotorController.RunMode.RUN_USING_ENCODERS){
-            driveLeft.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        }
-    }
-
-    //resets the measured turn angle to 0
-    private void resetAngle(){
-        angle = 0;
+        this.setRead();
     }
 
     //calculate the angle turned by the robot based on portion of circumference turned
-    private double getAngle() {
-        double currentDistance = distance;
-        timer.startTime();
-        //compound the angle after .1 seconds
-        while(timer.time() < angleInterval){
-
-        }
-        double ratio = (this.getDistance() - currentDistance) / circumference;
-        angle += ratio * (2 * Math.PI);
-        return angle;
+    private double angleToDistance(double angle) {
+        double ratio = angle / (2 * Math.PI);
+        return ratio * circumference;
     }
-}
 
-//http://swerverobotics.org/wp/index.php/resources/ftc-programming/swerve-ftc-library/
+    private void setWrite(){
+        drive.setMotorControllerDeviceMode(DcMotorController.DeviceMode.WRITE_ONLY);
+    }
+
+    private void setRead(){
+        drive.setMotorControllerDeviceMode(DcMotorController.DeviceMode.READ_ONLY);
+    }
+
+}
