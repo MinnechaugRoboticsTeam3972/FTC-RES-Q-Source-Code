@@ -2,8 +2,10 @@ package com.qualcomm.ftcrobotcontroller.RobotFunctions;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveMotors {
+    ElapsedTime timer;
     DcMotorController drive;
     private DcMotor driveLeft, driveRight;
     private double distance;
@@ -11,6 +13,7 @@ public class DriveMotors {
 
     //DriveMotors Constructor
     public DriveMotors(DcMotor left, DcMotor right, DcMotorController controller){
+        timer = new ElapsedTime();
         drive = controller;
         driveLeft = left;
         driveRight = right;
@@ -21,24 +24,24 @@ public class DriveMotors {
     //Drive robot forwards
     public void driveForwards() {
         this.setWrite();
-        driveLeft.setPower(1);
-        driveRight.setPower(1);
+        driveLeft.setPower(.5);
+        driveRight.setPower(.5);
         this.setRead();
     }
 
     //Drive robot backwards
     public void driveBackwards() {
         this.setWrite();
-        driveLeft.setPower(-1);
-        driveRight.setPower(-1);
+        driveLeft.setPower(-.5);
+        driveRight.setPower(-.5);
         this.setRead();
     }
 
     //Turn robot to the right until desired angle is reached
     public void turnRight(double angle) {
         this.setWrite();
-        driveLeft.setPower(1);
-        driveRight.setPower(-1);
+        driveLeft.setPower(.5);
+        driveRight.setPower(-.5);
         this.setRead();
         double target = this.angleToDistance(angle);
         while(this.getDistance() < target){
@@ -50,12 +53,15 @@ public class DriveMotors {
     //Turn robot to the left until desired angle is reached
     public void turnLeft(double angle) {
         this.setWrite();
-        driveLeft.setPower(-1);
-        driveRight.setPower(1);
+        driveLeft.setPower(-.5);
+        driveRight.setPower(.5);
         this.setRead();
         double target = this.angleToDistance(angle);
+        timer.startTime();
         while(this.getDistance() < target){
-            //wait until turn is complete
+            if(timer.time() > 3){
+                this.stop();
+            }
         }
         this.stop();
     }
