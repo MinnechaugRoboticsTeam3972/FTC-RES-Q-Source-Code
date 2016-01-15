@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class advUltrasonicSensor{
+
     UltrasonicSensor sensor;
     ElapsedTime timer;
     private double newDistance;
@@ -13,9 +14,9 @@ public class advUltrasonicSensor{
     private double instantTime;
     private final double distanceInterval = 0.1;
 
-    public advUltrasonicSensor(UltrasonicSensor sensor, ElapsedTime time){
+    public advUltrasonicSensor(UltrasonicSensor sensor){
         this.sensor = sensor;
-        timer = time;
+        timer = new ElapsedTime();
         newDistance = 0;
         lastDistance = 0;
         newRate = 0;
