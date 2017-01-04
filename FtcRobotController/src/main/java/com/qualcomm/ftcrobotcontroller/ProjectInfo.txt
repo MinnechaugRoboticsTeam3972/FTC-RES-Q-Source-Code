@@ -1,0 +1,21 @@
+/*
+All distance measurements are in inches
+All angle measurements are in degrees
+
+All autonomous actions can be done within the bounds / on the sides of a right triangle
+
+1000 encoder ticks = 6.625 inches on arena pads
+150.943396226415 encoder ticks = 1 inch
+
+every 20 inches the right motor drives 0.75 inches extra:
+Right Excess = .75/20 * d (distance driven in inches)
+Set Right distance: initial calc -.75/20 * initial calc
+
+Robot diameter (as a circle across the diagonal of the treads) is 21.375 inches
+Robot diameter (as a circle perpendicularly across the treads) is 14.625 inches
+Avereage diameter is 18 inches
+
+Ultrasonic sensors measure 3 cm greater than the distance from the front of the sensor
+(distance in front of sensor = ultrasoniclevel() - 3)
+
+*/
